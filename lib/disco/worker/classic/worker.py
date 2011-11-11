@@ -248,7 +248,11 @@ class Worker(worker.Worker):
                     jobzip.writestr(path, bytes)
         else:
             for path in get('required_files'):
-                jobzip.write(path, os.path.join('lib', os.path.basename(path)))
+                # jobzip.write(path, os.path.join('lib', os.path.basename(path)))
+		new_path = path
+		if os.path.isabs(new_path):
+			new_path = new_path[1:]
+                jobzip.write(path, new_path)
         if get('required_modules') is None:
             self['required_modules'] = find_modules([obj
                                                      for key in self
